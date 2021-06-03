@@ -11,8 +11,8 @@ def cookie_jar_to_str(cookies):
     return cookies_str[:-2]
 
 
-def bro_str_to_dic(s):
-    return {i.split(': ')[0].strip(): i.split(': ')[1].strip() if len(i.split(': ')[1].strip()) > 0 else '' for i in s.split('\n') if len(i) > 0}
+def bro_str_to_dic(x):
+    return {x[:x.find(':')]: x[x.find(':') + 1:].strip() for x in str.strip().split('\n')}
 
 
 def bro_jar_to_dic(cookies):
