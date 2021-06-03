@@ -66,7 +66,7 @@ class Hidden_Bro():
 
 
     def head_bro(self):
-        bro = webdriver.Chrome(executable_path='/Users/wei/workspace/chromedriver', options=self.options)
+        bro = webdriver.Chrome(executable_path='E:/chromedriver.exe', options=self.options)
         if os.path.exists('./identity.txt'):
             js = self.read_identity()
             bro.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
@@ -79,28 +79,29 @@ class Hidden_Bro():
             return self.head_bro()
 
 
+    
+
+# 各大网站的登录 selenium版
+class login_web():
+    def __init__(self, view_bro=False):
+        if not view_bro:
+            self.bro = Hidden_Bro().head_bro()
+        else:
+            self.bro = Hidden_Bro().head_bro()
+
     def login_tb(self, username, password, view_bro=False):
         """
         username: 账号
         password: 密码
         view_bro: 浏览器的可视化
         """
-        if not view_bro:
-            bro = self.head_bro()
-        else:
-            bro = self.headless_bro()
         url = 'https://login.taobao.com/member/login.jhtml'
-        bro.get(url)
+        self.bro.get(url)
         time.sleep(1)
-        bro.find_element_by_xpath('//*[@id="fm-login-id"]').send_keys(username)
+        self.bro.find_element_by_xpath('//*[@id="fm-login-id"]').send_keys(username)
         time.sleep(1)
-        bro.find_element_by_xpath('//*[@id="fm-login-password"]').send_keys(password)
+        self.bro.find_element_by_xpath('//*[@id="fm-login-password"]').send_keys(password)
         time.sleep(1)
-        bro.find_element_by_xpath('//*[@id="login-form"]/div[4]/button').click()
+        self.bro.find_element_by_xpath('//*[@id="login-form"]/div[4]/button').click()
         time.sleep(3)
-        # print(bro.page_source)
-        # with open('tb.html', 'w') as f:
-        #     f.write(bro.page_source)
-        return bro
-
-
+        return self.bro
