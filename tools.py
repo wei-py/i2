@@ -4,26 +4,33 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import ChromeOptions
 
 
+def bro_str_to_dic(x):
+    return {x[:x.find(':')]: x[x.find(':') + 1:].strip() for x in str.strip().split('\n')}
+
+
+def cookiesStrToDic(s):
+    return {i.split('=')[0].strip(): i.split('=')[1].strip() for i in s.split('; ')}
+
 def cookie_jar_to_str(cookies):
     cookies_str = ''
     for key ,value in requests.utils.dict_from_cookiejar(cookies).items():
         cookies_str += key + '=' + value + ';' + ' '
     return cookies_str[:-2]
 
+def headerStrToDic(s):
+    return {i.split(': ')[0].strip(): i.split(': ')[1].strip() if len(i.split(': ')) > 1 else '' for i in s.split('\n') if len(i.split(': ')) > 1}
 
-def bro_str_to_dic(x):
-    return {x[:x.find(':')]: x[x.find(':') + 1:].strip() for x in str.strip().split('\n')}
-
-
-def bro_jar_to_dic(cookies):
-    return {cookie['name']: cookie['value'] for cookie in cookies}
-
-
-def load_js(js_path, jscode):
+def runJs(js_path, jscode):
     with open(js_path, 'r') as f:
         content = f.read()
     ctx = execjs.compile(content)
     return ctx.eval(jscode)
+
+def load_cookies(cookies_path):
+    with open(cookies_path, 'rb') as f:
+        cookies = pickle.load(f)
+    return cookies
+
 
 
 
