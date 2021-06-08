@@ -3,6 +3,16 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import ChromeOptions
 
+def strTodic(s, x, y, headerTo=False, cookiesTo=False):
+    if headerTo and cookiesTo:
+        print('error')
+        return
+    if headerTo:
+        return {i.split(': ')[0].strip(): i.split(': ')[1].strip() if len(i.split(': ')) > 1 else '' for i in s.split('\n') if len(i.split(': ')) > 1}
+    if cookiesTo:
+        return {i.split('=')[0].strip(): i.split('=')[1].strip() for i in s.split('; ')}
+    return {i[:i.find(y)]: i[i.find(y) + 1:].strip() for i in s.strip().split(x)}
+
 
 def bro_str_to_dic(x):
     return {x[:x.find(':')]: x[x.find(':') + 1:].strip() for x in str.strip().split('\n')}
